@@ -2,14 +2,14 @@
 new Vue({
   el: '#trackingApp',
   data: {
-    paket: app.$data.paket,
-    tracking: { ...app.$data.tracking },
+    paket: dummyData.paket,
+    tracking: { ...dummyData.tracking },
     form: {
       nim: '',
       nama: '',
       ekspedisi: '',
       paket: '',
-      tanggalKirim: '',
+      tanggalKirim: new Date().toISOString().split('T')[0],
       total: 0
     }
   },
@@ -20,12 +20,6 @@ new Vue({
     selectedPaket() {
       return this.paket.find(p => p.kode === this.form.paket);
     },
-    paketMap() {
-      return this.paket.reduce((map, p) => {
-        map[p.kode] = p;
-        return map;
-      }, {});
-    },
     nextSequence() {
       const year = new Date().getFullYear();
       const prefix = `DO${year}-`;
@@ -33,31 +27,36 @@ new Vue({
         .filter(k => k.startsWith(prefix))
         .map(k => parseInt(k.split('-')[1]))
         .sort((a, b) => b - a);
-      const next = keys.length > 0 ? keys[0] + 1 : 1;
+      const next = (keys[0] || 0) + 1;
       return `${prefix}${next.toString().padStart(3, '0')}`;
     }
   },
   methods: {
     onPaketChange() {
-      this.form.total = this.selectedPaket?.harga || 0;
+      this.form.total = this.selectedPaket ? this.selectedPaket.harga : 0;
     },
     addDO() {
-      const noDo = this.nextSequence;
-      this.$set(this.tracking, noDo, {
+      if (!this.form.nim || !this.form.nama || !this.form.ekspedisi || !this.form.paket) {
+        alert('Harap isi semua field!');
+        return;
+      }
+      if (this.form.nim.length !== 9 || !/^\d+$/.test(this.form.nim)) {
+        alert('NIM harus 9 digit angka!');
+        return;
+      }
+
+      const noDO = this.nextSequence;
+      this.$set(this.tracking, noDO, {
         nim: this.form.nim,
         nama: this.form.nama,
         ekspedisi: this.form.ekspedisi,
         paket: this.form.paket,
         tanggalKirim: this.form.tanggalKirim,
         total: this.form.total,
-        status: "Dalam Perjalanan",
-        perjalanan: [
-          { waktu: `${this.form.tanggalKirim} 09:00:00`, keterangan: "Penerimaan di Loket" }
-        ]
+        status: "Dalam Perjalanan"
       });
-      this.resetForm();
-    },
-    resetForm() {
+
+      // Reset form
       this.form = {
         nim: '', nama: '', ekspedisi: '', paket: '', tanggalKirim: this.today, total: 0
       };
@@ -65,16 +64,7 @@ new Vue({
   },
   watch: {
     'form.paket'(newVal) {
-      if (newVal) {
-        const pkg = this.paket.find(p => p.kode === newVal);
-        if (pkg) this.form.total = pkg.harga;
-      }
-    },
-    tracking: {
-      handler() {
-        console.log('Tracking diperbarui:', Object.keys(this.tracking).length);
-      },
-      deep: true
+      this.form.total = this.selectedPaket ? this.selectedPaket.harga : 0;
     }
   }
 });

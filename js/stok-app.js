@@ -2,29 +2,19 @@
 new Vue({
   el: '#stokApp',
   data: {
-    upbjjList: app.$data.upbjjList,
-    kategoriList: app.$data.kategoriList,
-    stok: app.$data.stok.map(s => ({ ...s })), // clone
-    filter: {
-      upbjj: '',
-      kategori: '',
-      lowStock: false
-    },
+    upbjjList: dummyData.upbjjList,
+    kategoriList: dummyData.kategoriList,
+    stok: dummyData.stok.map(item => ({ ...item })), // clone agar bisa diedit
+    filter: { upbjj: '', kategori: '', lowStock: false },
     sortBy: 'judul',
-    form: {
-      kode: '', judul: '', kategori: '', upbjj: '', lokasiRak: '',
-      harga: 0, qty: 0, safety: 0, catatanHTML: ''
-    },
+    form: { kode: '', judul: '', kategori: '', upbjj: '', lokasiRak: '', harga: 0, qty: 0, safety: 0, catatanHTML: '' },
     editMode: false,
     editIndex: -1
   },
   computed: {
     filteredKategori() {
       if (!this.filter.upbjj) return [];
-      return [...new Set(this.stok
-        .filter(s => s.upbjj === this.filter.upbjj)
-        .map(s => s.kategori)
-      )].sort();
+      return [...new Set(this.stok.filter(s => s.upbjj === this.filter.upbjj).map(s => s.kategori))].sort();
     },
     filteredStok() {
       let result = this.stok.filter(item => {
@@ -34,7 +24,6 @@ new Vue({
         return true;
       });
 
-      // Sort
       result.sort((a, b) => {
         if (this.sortBy === 'judul') return a.judul.localeCompare(b.judul);
         if (this.sortBy === 'qty') return a.qty - b.qty;
@@ -61,35 +50,31 @@ new Vue({
     cancelEdit() {
       this.editMode = false;
       this.editIndex = -1;
-      this.resetForm();
+      this.form = { kode: '', judul: '', kategori: '', upbjj: '', lokasiRak: '', harga: 0, qty: 0, safety: 0, catatanHTML: '' };
     },
     saveItem() {
+      if (!this.form.kode || !this.form.judul || !this.form.upbjj) {
+        alert('Harap isi semua field wajib!');
+        return;
+      }
       if (this.editMode) {
         this.$set(this.stok, this.editIndex, { ...this.form });
       } else {
         this.stok.push({ ...this.form });
       }
       this.cancelEdit();
-    },
-    resetForm() {
-      this.form = {
-        kode: '', judul: '', kategori: '', upbjj: '', lokasiRak: '',
-        harga: 0, qty: 0, safety: 0, catatanHTML: ''
-      };
     }
   },
   watch: {
     'filter.upbjj'(newVal) {
       if (!newVal) this.filter.kategori = '';
     },
-    'stok': {
-      handler() {
-        console.log('Stok berubah:', this.stok.length, 'item');
-      },
+    stok: {
+      handler() { console.log('Stok berubah'); },
       deep: true
     },
     'filter.lowStock'(val) {
-      console.log('Filter lowStock:', val);
+      console.log('Filter stok rendah:', val);
     }
   }
 });
