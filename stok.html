@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Stok Bahan Ajar</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://unpkg.com/vue@2"></script>
+  <script src="js/dataBahanAjar.js"></script>
+</head>
+<body>
+  <div id="stokApp">
+    <h1>Stok Bahan Ajar UT</h1>
+    <a href="index.html">Kembali ke Menu</a>
+
+    <!-- Filter -->
+    <div class="filters">
+      <h3>Filter & Sort</h3>
+
+      <label>UT-Daerah:</label>
+      <select v-model="filter.upbjj" @change="onUpbjjChange">
+        <option value="">Semua</option>
+        <option v-for="u in upbjjList" :value="u">{{ u }}</option>
+      </select>
+
+      <label v-show="filter.upbjj">Kategori:</label>
+      <select v-model="filter.kategori" v-show="filter.upbjj">
+        <option value="">Semua</option>
+        <option v-for="k in filteredKategori" :value="k">{{ k }}</option>
+      </select>
+
+      <label>Stok Rendah:</label>
+      <input type="checkbox" v-model="filter.lowStock" />
+
+      <label>Urutkan:</label>
+      <select v-model="sortBy">
+        <option value="judul">Judul</option>
+        <option value="qty">Stok</option>
+        <option value="harga">Harga</option>
+      </select>
+
+      <button @click="resetFilters">Reset Filter</button>
+    </div>
+
+    <!-- Tabel Stok -->
+    <table border="1" width="100%">
+      <thead>
+        <tr>
+          <th>Kode / Judul</th>
+          <th>Kategori</th>
+          <th>UT-Daerah</th>
+          <th>Lokasi Rak</th>
+          <th>Stok / Safety</th>
+          <th>Status</th>
+          <th>Catatan</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="item in filteredStok" :key="item.kode">
+          <td>
+            <strong>{{ item.kode }}</strong><br>
+            {{ item.judul }}
+          </td>
+          <td>{{ item.kategori }}</td>
+          <td>{{ item.upbjj }}</td>
+          <td>{{ item.lokasiRak }}</td>
+          <td>
+            <span :class="{ 'text-danger': item.qty === 0, 'text-warning': item.qty < item.safety && item.qty > 0 }">
+              {{ item.qty }} / {{ item.safety }}
+            </span>
+          </td>
+          <td>
+            <span v-if="item.qty >= item.safety" class="status-safe">Aman</span>
+            <span v-else-if="item.qty === 0" class="status-empty">Kosong</span>
+            <span v-else class="status-low">Menipis</span>
+          </td>
+          <td v-html="item.catatanHTML"></td>
+          <td>
+            <button @click="editItem(item)">Edit</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Form Tambah/Edit -->
+    <div class="form-section">
+      <h3>{{ editMode ? 'Edit' : 'Tambah' }} Bahan Ajar</h3>
+      <form @submit.prevent="saveItem">
+        <input v-model="form.kode" placeholder="Kode" required />
+        <input v-model="form.judul" placeholder="Judul" required />
+        <select v-model="form.kategori" required>
+          <option v-for="k in kategoriList" :value="k">{{ k }}</option>
+        </select>
+        <select v-model="form.upbjj" required>
+          <option v-for="u in upbjjList" :value="u">{{ u }}</option>
+        </select>
+        <input v-model="form.lokasiRak" placeholder="Lokasi Rak" required />
+        <input v-model.number="form.harga" type="number" placeholder="Harga" required />
+        <input v-model.number="form.qty" type="number" placeholder="Stok" required />
+        <input v-model.number="form.safety" type="number" placeholder="Safety Stock" required />
+        <textarea v-model="form.catatanHTML" placeholder="Catatan (HTML)"></textarea>
+        <button type="submit">{{ editMode ? 'Update' : 'Tambah' }}</button>
+        <button type="button" @click="cancelEdit" v-if="editMode">Batal</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/stok-app.js"></script>
+</body>
+</html>

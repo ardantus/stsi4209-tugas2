@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tracking DO</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://unpkg.com/vue@2"></script>
+  <script src="js/dataBahanAjar.js"></script>
+</head>
+<body>
+  <div id="trackingApp">
+    <h1>Tracking Delivery Order (DO)</h1>
+    <a href="index.html">Kembali ke Menu</a>
+
+    <!-- Form Tambah DO -->
+    <div class="form-section">
+      <h3>Tambah DO Baru</h3>
+      <form @submit.prevent="addDO">
+        <input v-model="form.nim" placeholder="NIM" required pattern="\d{9}" />
+        <input v-model="form.nama" placeholder="Nama" required />
+        <select v-model="form.ekspedisi" required>
+          <option value="">Pilih Ekspedisi</option>
+          <option value="JNE Regular">JNE Regular</option>
+          <option value="JNE Express">JNE Express</option>
+        </select>
+        <select v-model="form.paket" @change="onPaketChange" required>
+          <option value="">Pilih Paket</option>
+          <option v-for="p in paket" :value="p.kode">
+            {{ p.kode }} - {{ p.nama }}
+          </option>
+        </select>
+
+        <div v-if="selectedPaket" class="paket-detail">
+          <strong>Isi Paket:</strong>
+          <ul>
+            <li v-for="isi in selectedPaket.isi">{{ isi }}</li>
+          </ul>
+        </div>
+
+        <input v-model="form.tanggalKirim" type="date" :value="today" required />
+        <input v-model.number="form.total" :value="selectedPaket?.harga || 0" readonly />
+        <button type="submit">Tambah DO</button>
+      </form>
+    </div>
+
+    <!-- Daftar DO -->
+    <h3>Daftar DO</h3>
+    <table border="1" width="100%">
+      <thead>
+        <tr>
+          <th>Nomor DO</th>
+          <th>NIM / Nama</th>
+          <th>Ekspedisi</th>
+          <th>Paket</th>
+          <th>Tanggal Kirim</th>
+          <th>Total</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(doItem, noDo) in tracking" :key="noDo">
+          <td>{{ noDo }}</td>
+          <td>{{ doItem.nim }}<br>{{ doItem.nama }}</td>
+          <td>{{ doItem.ekspedisi }}</td>
+          <td>{{ paketMap[doItem.paket]?.nama || doItem.paket }}</td>
+          <td>{{ doItem.tanggalKirim }}</td>
+          <td>Rp {{ doItem.total.toLocaleString() }}</td>
+          <td>{{ doItem.status }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script src="js/tracking-app.js"></script>
+</body>
+</html>
