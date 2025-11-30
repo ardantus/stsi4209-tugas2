@@ -2,18 +2,39 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Menu Utama - SITTA UT</title>
+  <title>Tugas Praktik 2 Vue.js - SITTA UT</title>
   <link rel="stylesheet" href="css/style.css" />
-  <script src="https://unpkg.com/vue@2/dist/vue.js"></script>
 </head>
-<body>
-  <div class="container">
-    <h1>Sistem Informasi Tiras dan Transaksi Bahan Ajar (SITTA)</h1>
-    <nav>
-      <a href="stok.html">Stok Bahan Ajar</a>
-      <a href="tracking.html">Tracking DO</a>
-    </nav>
-  </div>
+<body class="layout">
+  <header class="header">
+    <h1>Tugas Praktik 2 - Pemesanan Bahan Ajar SITTA</h1>
+    <p>Framework: Vue.js </p>
+  </header>
+
+  <main class="main">
+    <section class="card">
+      <h2>Halaman Aplikasi</h2>
+      <ul class="nav-list">
+        <li><a href="stok.html">📚 Stok Bahan Ajar</a></li>
+        <li><a href="tracking.html">🚚 Tracking Delivery Order (DO)</a></li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Petunjuk Singkat</h2>
+      <p>
+        Gunakan halaman <strong>Stok Bahan Ajar</strong> untuk melihat daftar stok,
+        filter, sort, dan menambah data stok baru.
+      </p>
+      <p>
+        Gunakan halaman <strong>Tracking DO</strong> untuk menambah dan memantau
+        pengiriman Delivery Order bahan ajar (nomor DO otomatis).
+      </p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <small>&copy; 2025 Universitas Terbuka — Tugas Praktik 2 STSI4209</small>
+  </footer>
 </body>
 </html>

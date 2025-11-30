@@ -2,6 +2,7 @@
 
 ### Struktur Folder Proyek
 
+```text
 tugas2-vue-ut/
 ├── index.html          → Halaman utama dengan navigasi
 ├── stok.html           → Halaman Stok Bahan Ajar (WAJIB)
@@ -12,7 +13,7 @@ tugas2-vue-ut/
 ├── dataBahanAjar.js → Data dummy (hanya objek, tidak ada Vue instance)
 ├── stok-app.js      → Logika Vue untuk stok.html
 └── tracking-app.js  → Logika Vue untuk tracking.html
-
+text```
 
 ### Fitur yang Telah Diimplementasikan
 

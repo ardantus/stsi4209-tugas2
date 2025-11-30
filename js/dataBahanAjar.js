@@ -1,28 +1,86 @@
 // js/dataBahanAjar.js
-// FILE INI HANYA BERISI DATA DUMMY – JANGAN ADA new Vue() DI SINI!
+// Dummy data bahan ajar & paket untuk SITTA UT
 
-const dummyData = {
+window.dataBahanAjar = {
   upbjjList: ["Jakarta", "Surabaya", "Makassar", "Padang", "Denpasar"],
   kategoriList: ["MK Wajib", "MK Pilihan", "Praktikum", "Problem-Based"],
+  pengirimanList: [
+    { kode: "REG", nama: "JNE Regular (3-5 hari)" },
+    { kode: "EXP", nama: "JNE Express (1-2 hari)" }
+  ],
   paket: [
-    { kode: "PAKET-UT-001", nama: "PAKET IPS Dasar", isi: ["EKMA4116", "EKMA4115"], harga: 120000 },
-    { kode: "PAKET-UT-002", nama: "PAKET IPA Dasar", isi: ["BIOL4201", "FISIP4001"], harga: 140000 }
+    {
+      kode: "PAKET-UT-001",
+      nama: "PAKET IPS Dasar",
+      isi: ["EKMA4116", "EKMA4115"],
+      harga: 120000
+    },
+    {
+      kode: "PAKET-UT-002",
+      nama: "PAKET IPA Dasar",
+      isi: ["BIOL4201", "FISIP4001"],
+      harga: 140000
+    }
   ],
   stok: [
-    { kode: "EKMA4116", judul: "Pengantar Manajemen", kategori: "MK Wajib", upbjj: "Jakarta", lokasiRak: "R1-A3", harga: 65000, qty: 28, safety: 20, catatanHTML: "<em>Edisi 2024, cetak ulang</em>" },
-    { kode: "EKMA4115", judul: "Pengantar Akuntansi", kategori: "MK Wajib", upbjj: "Jakarta", lokasiRak: "R1-A4", harga: 60000, qty: 7, safety: 15, catatanHTML: "<strong>Cover baru</strong>" },
-    { kode: "BIOL4201", judul: "Biologi Umum (Praktikum)", kategori: "Praktikum", upbjj: "Surabaya", lokasiRak: "R3-B2", harga: 80000, qty: 12, safety: 10, catatanHTML: "Butuh <u>pendingin</u> untuk kit basah" },
-    { kode: "FISIP4001", judul: "Dasar-Dasar Sosiologi", kategori: "MK Pilihan", upbjj: "Makassar", lokasiRak: "R2-C1", harga: 55000, qty: 2, safety: 8, catatanHTML: "Stok <i>menipis</i>, prioritaskan reorder" }
+    {
+      kode: "EKMA4116",
+      judul: "Pengantar Manajemen",
+      kategori: "MK Wajib",
+      upbjj: "Jakarta",
+      lokasiRak: "R1-A3",
+      harga: 65000,
+      qty: 28,
+      safety: 20,
+      catatanHTML: "<em>Edisi 2024, cetak ulang</em>"
+    },
+    {
+      kode: "EKMA4115",
+      judul: "Pengantar Akuntansi",
+      kategori: "MK Wajib",
+      upbjj: "Jakarta",
+      lokasiRak: "R1-A4",
+      harga: 60000,
+      qty: 7,
+      safety: 15,
+      catatanHTML: "<strong>Cover baru</strong>"
+    },
+    {
+      kode: "BIOL4201",
+      judul: "Biologi Umum (Praktikum)",
+      kategori: "Praktikum",
+      upbjj: "Surabaya",
+      lokasiRak: "R3-B2",
+      harga: 80000,
+      qty: 12,
+      safety: 10,
+      catatanHTML: "Butuh <u>pendingin</u> untuk kit basah"
+    },
+    {
+      kode: "FISIP4001",
+      judul: "Dasar-Dasar Sosiologi",
+      kategori: "MK Pilihan",
+      upbjj: "Makassar",
+      lokasiRak: "R2-C1",
+      harga: 55000,
+      qty: 2,
+      safety: 8,
+      catatanHTML: "Stok <i>menipis</i>, prioritaskan reorder"
+    }
   ],
-  tracking: {
-    "DO2025-001": {
+  // contoh 1 DO awal (opsional, bisa dikosongkan)
+  initialTracking: [
+    {
+      noDo: "DO2025-0001",
       nim: "123456789",
       nama: "Rina Wulandari",
-      ekspedisi: "JNE Regular",
-      paket: "PAKET-UT-001",
+      upbjj: "Jakarta",
+      ekspedisiKode: "REG",
+      ekspedisiNama: "JNE Regular (3-5 hari)",
+      paketKode: "PAKET-UT-001",
       tanggalKirim: "2025-08-25",
       total: 120000,
       status: "Dalam Perjalanan"
     }
-  }
+  ]
 };
